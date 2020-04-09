@@ -1,17 +1,41 @@
-import React from 'react';
+import React, {useState} from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import URLS from './URLS';
+import firebase from './firebase';  
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+// Theme
+import { MuiThemeProvider } from '@material-ui/core/styles';
+import theme from './theme';
+import './assets/css/main.css';
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+// Project containers
+import Landing from './containers/Landing';
+import Game from './containers/Game';
+import Invite from './containers/Invite';
+
+const AuthRoute = (props) => {
+    const [auth, setAuth] = useState(null);
+    firebase.auth().onAuthStateChanged((user) => setAuth(user));
+    if(auth) {
+       return <Route {...props} />
+    }
+    return <Route path={URLS.landing} component={Landing} />
+ }
+
+function App() {
+    return (
+        <BrowserRouter>
+            <MuiThemeProvider theme={theme}>
+                <Switch>
+                    <AuthRoute path={URLS.game.concat(':id/')} component={Game} />
+                    <AuthRoute path={URLS.invite.concat(':id/')} component={Invite} />
+
+                    <Route path={URLS.landing} component={Landing} />
+                </Switch>
+            </MuiThemeProvider>
+        </BrowserRouter>
+    );
+}
+
+ReactDOM.render(<App />, document.getElementById('root'));
