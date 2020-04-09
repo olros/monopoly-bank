@@ -90,7 +90,7 @@ function BankTransaction(props) {
                 }).then(() => {
                     var batch = db.batch();
                     let fromDoc = db.collection('games').doc(game.id).collection('players').doc(playerUid);
-                    batch.update(fromDoc, {money: firebase.firestore.FieldValue.decrement(amount)});
+                    batch.update(fromDoc, {money: firebase.firestore.FieldValue.increment(-amount)});
                     
                     batch.commit().then(() => showSnackbar("Transaksjonen ble gjennomført"));
                 });

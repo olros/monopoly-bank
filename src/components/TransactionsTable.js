@@ -14,6 +14,29 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 
+const useStyles = makeStyles({
+    root: {
+        maxWidth: 700,
+        margin: 'auto',
+        width: '100%',
+        backgroundColor: 'var(--secondary-background)',
+        padding: 20,
+        marginBottom: 20,
+    },
+    table: {
+        width: '100%',
+    },
+    container: {
+        maxHeight: 440,
+        borderRadius: 4,
+    },
+    subtitle: {
+        color: 'var(--text-color)',
+        textAlign: 'center',
+        marginBottom: 10,
+    },
+});
+
 const formatNumber = (x) => {
     return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ".");
 }
@@ -46,32 +69,6 @@ const columns = [
   },
 ];
 
-const useStyles = makeStyles({
-    root: {
-        maxWidth: 700,
-        margin: 'auto',
-        width: '100%',
-        backgroundColor: 'var(--secondary-background)',
-        padding: 20,
-        marginBottom: 20,
-    },
-    table: {
-        width: '100%',
-    },
-    container: {
-        maxHeight: 440,
-    },
-    subtitle: {
-        color: 'var(--text-color)',
-        textAlign: 'center',
-        marginBottom: 10,
-    },
-    stickyHeader: {
-        borderRadius: 4,
-        overflow: 'hidden',
-    },
-});
-
 function TransactionsTable(props) {
     const classes = useStyles();
     const { game } = props;
@@ -84,6 +81,7 @@ function TransactionsTable(props) {
         db.collection('games').doc(game.id).collection('transactions').onSnapshot((querySnapshot) => {
             let newRows = [];
             querySnapshot.forEach((doc) => newRows.push(doc.data()));
+            newRows.sort((a, b) => b.time - a.time);
             setRows(newRows);
         });
     }, [game.id]);
@@ -100,7 +98,7 @@ function TransactionsTable(props) {
         <Typography variant="h5" className={classes.subtitle}>Transaksjoner</Typography>
         <Paper elevation={0} variant="outlined" className={classes.table}>
         <TableContainer className={classes.container}>
-            <Table classes={{stickyHeader: classes.stickyHeader}} stickyHeader aria-label="sticky table">
+            <Table stickyHeader aria-label="Transaksjoner tabell">
             <TableHead>
                 <TableRow>
                 {columns.map((column) => (
