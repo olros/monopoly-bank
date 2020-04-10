@@ -78,10 +78,10 @@ function BankTransaction(props) {
         e.preventDefault();
         let player = players.find(player => player.data().uid === playerUid);
         if (pay) {
-            if (player.data().money >= amount) {
+            if (player.data().money >= parseInt(amount)) {
                 const db = firebase.firestore();
                 db.collection('games').doc(game.id).collection('transactions').add({
-                    amount: amount,
+                    amount: parseInt(amount),
                     from: playerUid,
                     fromName: playerName,
                     to: '--',
@@ -90,7 +90,7 @@ function BankTransaction(props) {
                 }).then(() => {
                     var batch = db.batch();
                     let fromDoc = db.collection('games').doc(game.id).collection('players').doc(playerUid);
-                    batch.update(fromDoc, {money: firebase.firestore.FieldValue.increment(-amount)});
+                    batch.update(fromDoc, {money: firebase.firestore.FieldValue.increment(-parseInt(amount))});
                     
                     batch.commit().then(() => showSnackbar("Transaksjonen ble gjennomført"));
                 });
@@ -100,7 +100,7 @@ function BankTransaction(props) {
         } else {
             const db = firebase.firestore();
                 db.collection('games').doc(game.id).collection('transactions').add({
-                    amount: amount,
+                    amount: parseInt(amount),
                     from: '--',
                     fromName: 'Banken',
                     to: playerUid,
@@ -109,7 +109,7 @@ function BankTransaction(props) {
                 }).then(() => {
                     var batch = db.batch();
                     let toDoc = db.collection('games').doc(game.id).collection('players').doc(playerUid);
-                    batch.update(toDoc, {money: firebase.firestore.FieldValue.increment(amount)});
+                    batch.update(toDoc, {money: firebase.firestore.FieldValue.increment(parseInt(amount))});
                     
                     batch.commit().then(() => showSnackbar("Transaksjonen ble gjennomført"));
                 });
@@ -138,7 +138,7 @@ function BankTransaction(props) {
                 >
                     Motta
                 </Button>
-                <TextField type="number" onChange={(e) => setAmount(parseInt(e.target.value))} value={amount} className={classes.input} label="Sum" variant="outlined" required />
+                <TextField type="number" onChange={(e) => setAmount(e.target.value)} value={amount} className={classes.input} label="Sum" variant="outlined" required />
                 <FormControl variant="outlined" className={classes.formControl}>
                     <InputLabel htmlFor="form-to">Spiller</InputLabel>
                     <Select

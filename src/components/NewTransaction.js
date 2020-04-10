@@ -78,10 +78,10 @@ function NewTransaction(props) {
         let fromPlayer = players.find(player => player.data().uid === from);
         if (from === to) {
             showSnackbar("En kan ikke sender penger til seg selv")
-        } else if (fromPlayer.data().money >= amount) {
+        } else if (fromPlayer.data().money >= parseInt(amount)) {
             const db = firebase.firestore();
             db.collection('games').doc(game.id).collection('transactions').add({
-                amount: amount,
+                amount: parseInt(amount),
                 from: from,
                 fromName: fromName,
                 to: to,
@@ -90,9 +90,9 @@ function NewTransaction(props) {
             }).then(() => {
                 var batch = db.batch();
                 let fromDoc = db.collection('games').doc(game.id).collection('players').doc(from);
-                batch.update(fromDoc, {money: firebase.firestore.FieldValue.increment(-amount)});
+                batch.update(fromDoc, {money: firebase.firestore.FieldValue.increment(-parseInt(amount))});
                 let toDoc = db.collection('games').doc(game.id).collection('players').doc(to);
-                batch.update(toDoc, {money: firebase.firestore.FieldValue.increment(amount)});
+                batch.update(toDoc, {money: firebase.firestore.FieldValue.increment(parseInt(amount))});
                 
                 batch.commit().then(() => showSnackbar("Transaksjonen ble gjennomført"));
             });
@@ -105,7 +105,7 @@ function NewTransaction(props) {
         <Paper elevation={3} className={classes.paper}>
             <Typography variant="h5" className={classes.subtitle}>Ny transaksjon</Typography>
             <form className={classes.flex} autoComplete="off" onSubmit={formSubmit}>
-                <TextField type="number" onChange={(e) => setAmount(parseInt(e.target.value))} value={amount} className={classes.input} label="Sum" variant="outlined" required />
+                <TextField type="number" onChange={(e) => setAmount(e.target.value)} value={amount} className={classes.input} label="Sum" variant="outlined" required />
                 <FormControl variant="outlined" className={classes.formControl}>
                     <InputLabel htmlFor="form-from">Fra</InputLabel>
                     <Select
