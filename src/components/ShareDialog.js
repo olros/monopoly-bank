@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
+import firebase from '../firebase';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/core/styles';
@@ -37,15 +38,26 @@ function ShareDialog(props) {
         textarea.current.select();
         document.execCommand("copy");
         showSnackbar("Linken er kopiert til utklippstavlen");
+        log('copy');
     }
     const shareSMS = () => {
         window.open('sms:?body=Hei!%0ABli%20med%20meg%20å%20spill:%20' + encodeURIComponent(url), '_blank');
+        log('sms');
     }
     const shareEmail = () => {
         window.open('mailto:?subject=Spill%20med%20meg&body=Hei!%0ABli%20med%20meg%20å%20spill:%20' + encodeURIComponent(url), '_blank');
+        log('email');
     }
     const shareFacebook = () => {
         window.open('https://www.facebook.com/sharer.php?u=' + encodeURIComponent(url), '_blank');
+        log('facebook');
+    }
+
+    const log = (type) => {
+        firebase.analytics().logEvent('share', {
+            method: type,
+            content_type: 'invite'
+        });
     }
 
     return (

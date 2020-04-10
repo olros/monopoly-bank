@@ -4,7 +4,7 @@ import 'firebase/auth';
 import 'firebase/analytics';
 const config = {
   apiKey: process.env.REACT_APP_API_KEY,
-  authDomain: "monopol-2020.firebaseapp.com",
+  authDomain: "monopol.ga",
   databaseURL: "https://monopol-2020.firebaseio.com",
   projectId: "monopol-2020",
   storageBucket: "monopol-2020.appspot.com",

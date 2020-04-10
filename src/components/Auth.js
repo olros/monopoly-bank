@@ -8,6 +8,11 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -42,6 +47,10 @@ const useStyles = makeStyles((theme) => ({
         height: 50,  
         marginBottom: 16,
     },
+    buttonSmall: {
+        height: 35,
+        marginBottom: 8,
+    },
 }));
 
 function Auth(props) {
@@ -52,6 +61,8 @@ function Auth(props) {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [login, setLogin] = useState(true);
+    const [forgotPassword, setForgotPassword] = useState(false);
+    const [emailAddress, setEmailAddress] = useState('');
 
     const formSubmit = (e) => {
         e.preventDefault();
@@ -79,6 +90,15 @@ function Auth(props) {
         }
     }
 
+    const getNewPassword = () => {
+        firebase.auth().sendPasswordResetEmail(emailAddress)
+            .then(() => {
+                showSnackbar("Epost med link er sendt");
+                setForgotPassword(false);
+                setEmailAddress('');
+            }).catch((error) => showSnackbar(error.code + " - " + error.message));
+    }
+
     return (
         <Paper elevation={3} className={classes.paper}>
             <Typography variant="h5" className={classes.subtitle}>{login ? "Logg inn" : "Opprett bruker"}</Typography>
@@ -97,12 +117,45 @@ function Auth(props) {
                 </Button>
                 <Button
                     color="secondary"
-                    className={classes.button}
+                    className={classes.buttonSmall}
                     onClick={() => setLogin(!login)}
                     >
                     {login ? "Ny bruker" : "Logg inn"}
                 </Button>
+                <Button
+                    color="secondary"
+                    className={classes.buttonSmall}
+                    onClick={() => setForgotPassword(true)}
+                    >
+                    Glemt passord?
+                </Button>
             </form>
+            <Dialog open={forgotPassword} onClose={() => setForgotPassword(false)} aria-labelledby="form-dialog-title">
+                <DialogTitle id="form-dialog-title">Glemt passord</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Skriv inn eposten din så sender vi deg en link så du kan lage et nytt passord
+                    </DialogContentText>
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        id="name"
+                        label="Epost"
+                        type="email"
+                        value={emailAddress}
+                        onChange={(e) => setEmailAddress(e.target.value)}
+                        fullWidth
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setForgotPassword(false)} color="primary">
+                        Avbryt
+                    </Button>
+                    <Button onClick={() => getNewPassword()} color="primary">
+                        Få nytt passord
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </Paper>
     );
 }
