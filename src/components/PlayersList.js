@@ -74,7 +74,7 @@ function PlayersList(props) {
             <List>
                 {players.map((player) => {
                     return (
-                        <ListItem button key={player.data().uid} >
+                        <ListItem key={player.data().uid} >
                             <ListItemAvatar>
                                 <Avatar className={classes.primary}>
                                     <PersonRoundedIcon />

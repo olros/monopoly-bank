@@ -90,11 +90,9 @@ function Invite(props) {
             showSnackbar("Invitasjonen har blitt godtatt")
             history.push(URLS.landing);
         });
-        db.collection('invites').doc(id).delete();
     }
     const declineInvite = () => {
-        const db = firebase.firestore();
-        db.collection('invites').doc(id).delete();
+        history.push(URLS.landing);
     }
 
     const showSnackbar = (message) => {
@@ -109,6 +107,7 @@ function Invite(props) {
                     <Paper elevation={3} className={classes.paper} >
                         <Typography variant="h1" className={classes.header}>{game.data().name}</Typography>
                         <Typography variant="subtitle1" className={classes.subtitle}>Du har blitt invitert til dette spillet</Typography>
+                        <Typography variant="subtitle1" className={classes.subtitle}>OBS: Hvis du allerede er med, vil pengene dine bli tilbakestilt til startsummen</Typography>
                         <div className={classes.flex}>
                             <Button
                                 variant="contained"

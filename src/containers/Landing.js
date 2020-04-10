@@ -85,8 +85,8 @@ function Landing(props) {
             </Paper>
             {auth ?
                 <React.Fragment>
-                    <NewGame showSnackbar={showSnackbar} />
                     <GamesList />
+                    <NewGame showSnackbar={showSnackbar} />
                     <Button
                         variant="contained"
                         color="secondary"

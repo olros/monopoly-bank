@@ -42,6 +42,11 @@ const useStyles = makeStyles((theme) => ({
         textAlign: 'center',
         marginBottom: 10,
     },
+    list: {
+        maxHeight: 600,
+        position: 'relative',
+        overflow: 'auto',
+    },
     listText: {
         color: 'var(--text-color)',
     },
@@ -76,7 +81,7 @@ function GamesList(props) {
     return (
         <Paper elevation={3} className={classes.paper}>
             <Typography variant="h5" className={classes.subtitle}>Mine spill</Typography>
-            <List>
+            <List className={classes.list}>
                 {games.map((game) => {
                     return (
                         <ListItem button key={game.id} onClick={() => openGame(game.id)} >
