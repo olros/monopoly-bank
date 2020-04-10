@@ -90,7 +90,7 @@ function Game(props) {
 
     return (
         <div className={classes.root}>
-            {game !== null &&
+            {game !== null && game.data() !== undefined &&
                 <React.Fragment>
                     <Paper elevation={3} className={classes.paper} >
                         <Typography variant="h2" className={classes.header}>{game.data().name}</Typography>
