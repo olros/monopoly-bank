@@ -90,8 +90,14 @@ function Invite(props) {
             showSnackbar("Invitasjonen har blitt godtatt")
             history.push(URLS.landing);
         });
+        firebase.analytics().logEvent('invite', {
+            accepted: true
+        });
     }
     const declineInvite = () => {
+        firebase.analytics().logEvent('invite', {
+            accepted: false
+        });
         history.push(URLS.landing);
     }
 

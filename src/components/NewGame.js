@@ -73,6 +73,10 @@ function NewGame(props) {
                     setPassStartMoney(0);
                 });
             });
+        firebase.analytics().logEvent('create_game', {
+            start_money: parseInt(initialMoney),
+            pass_start_money: parseInt(passStartMoney)
+        });
     }
 
     return (

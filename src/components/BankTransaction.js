@@ -94,25 +94,31 @@ function BankTransaction(props) {
                     
                     batch.commit().then(() => showSnackbar("Transaksjonen ble gjennomført"));
                 });
+                firebase.analytics().logEvent('transaction', {
+                    amount: parseInt(amount)
+                });
             } else {
                 showSnackbar("Spilleren har ikke nok penger");
             }
         } else {
             const db = firebase.firestore();
-                db.collection('games').doc(game.id).collection('transactions').add({
-                    amount: parseInt(amount),
-                    from: '--',
-                    fromName: 'Banken',
-                    to: playerUid,
-                    toName: playerName,
-                    time: new Date().getTime(),
-                }).then(() => {
-                    var batch = db.batch();
-                    let toDoc = db.collection('games').doc(game.id).collection('players').doc(playerUid);
-                    batch.update(toDoc, {money: firebase.firestore.FieldValue.increment(parseInt(amount))});
-                    
-                    batch.commit().then(() => showSnackbar("Transaksjonen ble gjennomført"));
-                });
+            db.collection('games').doc(game.id).collection('transactions').add({
+                amount: parseInt(amount),
+                from: '--',
+                fromName: 'Banken',
+                to: playerUid,
+                toName: playerName,
+                time: new Date().getTime(),
+            }).then(() => {
+                var batch = db.batch();
+                let toDoc = db.collection('games').doc(game.id).collection('players').doc(playerUid);
+                batch.update(toDoc, {money: firebase.firestore.FieldValue.increment(parseInt(amount))});
+                
+                batch.commit().then(() => showSnackbar("Transaksjonen ble gjennomført"));
+            });
+            firebase.analytics().logEvent('transaction', {
+                amount: parseInt(amount)
+            });
         }
     }
 

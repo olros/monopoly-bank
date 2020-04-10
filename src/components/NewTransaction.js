@@ -96,6 +96,9 @@ function NewTransaction(props) {
                 
                 batch.commit().then(() => showSnackbar("Transaksjonen ble gjennomført"));
             });
+            firebase.analytics().logEvent('transaction', {
+                amount: parseInt(amount)
+            });
         } else {
             showSnackbar("Spilleren som betaler har ikke nok penger");
         }

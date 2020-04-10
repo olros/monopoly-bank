@@ -59,6 +59,9 @@ function QuickActions(props) {
             batch.update(toDoc, {money: firebase.firestore.FieldValue.increment(game.data().passStartMoney)});
             batch.commit().then(() => showSnackbar("Du har passert start"));
         }).catch((error) => showSnackbar(error.code + " - " + error.message));
+        firebase.analytics().logEvent('quick_action', {
+            action: 'pass start'
+        });
     }
 
     return (
