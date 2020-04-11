@@ -21,6 +21,7 @@ import NewTransaction from '../components/NewTransaction';
 import BankTransaction from '../components/BankTransaction';
 import TransactionsTable from '../components/TransactionsTable';
 import QuickActions from '../components/QuickActions';
+import GitHubLink from '../components/GitHubLink';
 
 const useStyles = makeStyles({
     root: {
@@ -116,6 +117,7 @@ function Game(props) {
                 >
                 Forsiden
             </Button>
+            <GitHubLink />
             <Snackbar
                 anchorOrigin={{
                     vertical: 'bottom',

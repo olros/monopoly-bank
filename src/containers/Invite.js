@@ -14,6 +14,9 @@ import Button from '@material-ui/core/Button';
 // Icons
 import CloseIcon from '@material-ui/icons/Close';
 
+// Components
+import GitHubLink from '../components/GitHubLink';
+
 const useStyles = makeStyles({
     root: {
         padding: 20,
@@ -133,6 +136,7 @@ function Invite(props) {
                             </Button>
                         </div>
                     </Paper>
+                    <GitHubLink />
                 </React.Fragment>
             }
             <Snackbar

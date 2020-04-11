@@ -18,6 +18,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import Auth from '../components/Auth';
 import GamesList from '../components/GamesList';
 import NewGame from '../components/NewGame';
+import GitHubLink from '../components/GitHubLink';
 
 const useStyles = makeStyles({
     root: {
@@ -100,6 +101,7 @@ function Landing(props) {
             :
                 <Auth showSnackbar={showSnackbar} />
             }
+            <GitHubLink />
             <Snackbar
                 anchorOrigin={{
                     vertical: 'bottom',
