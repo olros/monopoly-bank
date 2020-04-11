@@ -46,6 +46,9 @@ const useStyles = makeStyles({
         color: 'var(--text-color)',
         textAlign: 'center',
         fontWeight: 600,
+        '@media only screen and (max-width: 700px)': {
+            fontSize: '13vw',
+        },
     },
     subtitle: {
         color: 'var(--text-color)',
